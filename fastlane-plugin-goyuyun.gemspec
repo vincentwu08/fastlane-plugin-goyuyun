@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.email         = 'vincentwu08@gmail.com'
 
   spec.summary       = '一键发布至买好云'
-  # spec.homepage      = "https://github.com/<GITHUB_USERNAME>/fastlane-plugin-goyuyun"
+  spec.homepage      = "https://github.com/vincentwu08/fastlane-plugin-goyuyun"
   spec.license       = "MIT"
 
   spec.files         = Dir["lib/**/*"] + %w(README.md LICENSE)
