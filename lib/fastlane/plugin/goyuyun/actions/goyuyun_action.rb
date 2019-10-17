@@ -5,7 +5,7 @@ module Fastlane
   module Actions
     class GoyuyunAction < Action
       def self.run(params)
-        UI.message("The goyuyun plugin is working.")
+        UI.message("The goyuyun plugin is working!")
 
         api_host = "http://www.tgvia.com/apiv1/app/upload"
         api_token = params[:api_token]
@@ -19,7 +19,7 @@ module Fastlane
           UI.user_error!("You have to provide a build file")
         end
 
-        UI.message "build_file: #{build_file}"
+        UI.message("build_file: #{build_file}")
 
         password = params[:password]
         if password.nil?
@@ -45,10 +45,10 @@ module Fastlane
         }
 
         goyuyun_client = Faraday.new(nil, conn_options) do |c|
-          c.request :multipart
-          c.request :url_encoded
-          c.response :json, content_type: /\bjson$/
-          c.adapter :net_http
+          c.request(:multipart)
+          c.request(:url_encoded)
+          c.response(:json, content_type: /\bjson$/)
+          c.adapter(:net_http)
         end
 
         params = {
@@ -58,16 +58,16 @@ module Fastlane
             'file' => Faraday::UploadIO.new(build_file, 'application/octet-stream')
         }
 
-        UI.message "Start upload #{build_file} to goyuyun..."
+        UI.message("Start upload #{build_file} to goyuyun...")
 
-        response = goyuyun_client.post api_host, params
+        response = goyuyun_client.post(api_host, params)
         info = response.body
 
         if info['code'] != 0
           UI.user_error!("GOYUYUN Plugin Error: #{info['message']}")
         end
 
-        UI.success "Upload success. "
+        UI.success("Upload success. ")
         # UI.success "Upload success. Visit this URL to see: https://www.goyuyun.com/#{info['data']['appShortcutUrl']}"
       end
 
@@ -100,50 +100,50 @@ module Fastlane
          description: "api_token in your GOYUYUN account",
             optional: false,
                 type: String),
-# FastlaneCore::ConfigItem.new(key: :user_key,
-#             env_name: "GOYUYUN_USER_KEY",
-#          description: "user_key in your GOYUYUN account",
-#             optional: false,
-#                 type: String),
-FastlaneCore::ConfigItem.new(key: :apk,
-                 env_name: "GOYUYUN_APK",
-                 description: "Path to your APK file",
-                 default_value: Actions.lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH],
-                 optional: true,
-                 verify_block: proc do |value|
-                   UI.user_error!("Couldn't find apk file at path '#{value}'") unless File.exist?(value)
-                 end,
-                 conflicting_options: [:ipa],
-                 conflict_block: proc do |value|
-                   UI.user_error!("You can't use 'apk' and '#{value.key}' options in one run")
-                 end),
-FastlaneCore::ConfigItem.new(key: :ipa,
-                 env_name: "GOYUYUN_IPA",
-                 description: "Path to your IPA file. Optional if you use the _gym_ or _xcodebuild_ action. For Mac zip the .app. For Android provide path to .apk file",
-                 default_value: Actions.lane_context[SharedValues::IPA_OUTPUT_PATH],
-                 optional: true,
-                 verify_block: proc do |value|
-                   UI.user_error!("Couldn't find ipa file at path '#{value}'") unless File.exist?(value)
-                 end,
-                 conflicting_options: [:apk],
-                 conflict_block: proc do |value|
-                   UI.user_error!("You can't use 'ipa' and '#{value.key}' options in one run")
-                 end),
-FastlaneCore::ConfigItem.new(key: :password,
-            env_name: "GOYUYUN_PASSWORD",
-         description: "set password to protect app",
-            optional: true,
-                type: String),
-FastlaneCore::ConfigItem.new(key: :update_description,
-            env_name: "GOYUYUN_UPDATE_DESCRIPTION",
-         description: "set update description for app",
-            optional: true,
-                type: String),
-FastlaneCore::ConfigItem.new(key: :install_type,
-            env_name: "GOYUYUN_INSTALL_TYPE",
-         description: "set install type for app (1=public, 2=password, 3=invite). Please set as a string",
-            optional: true,
-                type: String)
+          # FastlaneCore::ConfigItem.new(key: :user_key,
+          #             env_name: "GOYUYUN_USER_KEY",
+          #          description: "user_key in your GOYUYUN account",
+          #             optional: false,
+          #                 type: String),
+          FastlaneCore::ConfigItem.new(key: :apk,
+                           env_name: "GOYUYUN_APK",
+                           description: "Path to your APK file",
+                           default_value: Actions.lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH],
+                           optional: true,
+                           verify_block: proc do |value|
+                             UI.user_error!("Couldn't find apk file at path '#{value}'") unless File.exist?(value)
+                           end,
+                           conflicting_options: [:ipa],
+                           conflict_block: proc do |value|
+                             UI.user_error!("You can't use 'apk' and '#{value.key}' options in one run")
+                           end),
+          FastlaneCore::ConfigItem.new(key: :ipa,
+                           env_name: "GOYUYUN_IPA",
+                           description: "Path to your IPA file. Optional if you use the _gym_ or _xcodebuild_ action. For Mac zip the .app. For Android provide path to .apk file",
+                           default_value: Actions.lane_context[SharedValues::IPA_OUTPUT_PATH],
+                           optional: true,
+                           verify_block: proc do |value|
+                             UI.user_error!("Couldn't find ipa file at path '#{value}'") unless File.exist?(value)
+                           end,
+                           conflicting_options: [:apk],
+                           conflict_block: proc do |value|
+                             UI.user_error!("You can't use 'ipa' and '#{value.key}' options in one run")
+                           end),
+          FastlaneCore::ConfigItem.new(key: :password,
+                      env_name: "GOYUYUN_PASSWORD",
+                   description: "set password to protect app",
+                      optional: true,
+                          type: String),
+          FastlaneCore::ConfigItem.new(key: :update_description,
+                      env_name: "GOYUYUN_UPDATE_DESCRIPTION",
+                   description: "set update description for app",
+                      optional: true,
+                          type: String),
+          FastlaneCore::ConfigItem.new(key: :install_type,
+                      env_name: "GOYUYUN_INSTALL_TYPE",
+                   description: "set install type for app (1=public, 2=password, 3=invite). Please set as a string",
+                      optional: true,
+                          type: String)
         ]
       end
 
