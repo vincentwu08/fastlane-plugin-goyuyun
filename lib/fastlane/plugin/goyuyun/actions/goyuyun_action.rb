@@ -1,5 +1,5 @@
-require 'fastlane/action'
-require_relative '../helper/goyuyun_helper'
+require 'faraday'
+require 'faraday_middleware'
 
 module Fastlane
   module Actions
